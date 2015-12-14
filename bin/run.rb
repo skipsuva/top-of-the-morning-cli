@@ -2,6 +2,9 @@
 
 require_relative '../config/environment'
 
-binding.pry
+# binding.pry
 
-ImportController.new.pull_stories
+master = ImportIO.new
+master.open
+master.todays_stories
+master.selection

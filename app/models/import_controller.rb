@@ -14,9 +14,10 @@ class ImportController
 
 
   private
-  def pull_reddit
+  def pull_reddit(subreddit=nil)
     #create and pull reddit
-    stories["Reddit"] = RedditJson.new.top_story
+    subreddit ? stories["Reddit"] = RedditJson.new(subreddit).top_story : stories["Reddit"] = RedditJson.new.top_story
+    
   end
 
   def pull_stack_overflow
