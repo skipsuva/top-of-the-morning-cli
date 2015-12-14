@@ -2,9 +2,13 @@
 
 require_relative '../config/environment'
 
-# binding.pry
 
-master = ImportIO.new
-master.open
-master.todays_stories
-master.selection
+
+stuff = RedditSearch.new("gibberdygiberish")
+binding.pry
+stuff.validate
+
+# master = ImportIO.new
+# master.open
+# master.todays_stories
+# master.selection
