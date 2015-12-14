@@ -1,3 +1,3 @@
-require_relative '../config/environment'
+#!/usr/bin/env ruby
 
-ExampleCLI.new.call
+require_relative '../config/environment'
