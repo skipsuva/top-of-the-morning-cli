@@ -9,11 +9,11 @@ class HackerNews
     Entry.all.first
   end
 
-  def parser
-    top_post = importer
-    title = top_post.link.title
-    url = top_post.link.href
-    points = top_post.voting.score
+  def top_post
+    top_story = importer
+    title = top_story.link.title
+    url = top_story.link.href
+    points = top_story.voting.score
 
     HackerNewsStory.new(title, url, points)
   end

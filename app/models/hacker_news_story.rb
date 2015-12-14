@@ -1,3 +1,5 @@
+require_relative 'story.rb'
+
 class HackerNewsStory < Story
   attr_accessor :points
 

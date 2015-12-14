@@ -6,7 +6,7 @@ class RedditJson
   end
 
   def pull_json
-    subreddit ? url = "http://reddit.com/r/#{subreddit}/.json" : "http://reddit.com/.json"
+    subreddit ? url = "http://reddit.com/r/#{subreddit}/.json" : url = "http://reddit.com/.json"
     JSON.parse(RestClient.get(url))
   end
 
