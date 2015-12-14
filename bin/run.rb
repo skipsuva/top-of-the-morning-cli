@@ -4,8 +4,8 @@ require_relative '../config/environment'
 
 
 
-stuff = RedditSearch.new("gibberdygiberish")
-binding.pry
+stuff = StackOverflowValidator.new("gibberdygiberish")
+# binding.pry
 stuff.validate
 
 # master = ImportIO.new
