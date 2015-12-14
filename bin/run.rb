@@ -12,7 +12,7 @@ require_relative '../config/environment'
 # binding.pry
 # stuff.validate
 
-# master = ImportIO.new
-# master.open
-# master.todays_stories
-# master.selection
+master = ImportIO.new
+master.open
+master.todays_stories
+master.selection

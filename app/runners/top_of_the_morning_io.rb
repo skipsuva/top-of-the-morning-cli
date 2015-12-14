@@ -35,6 +35,7 @@ class ImportIO
         break
       elsif selection.downcase == "add"
         add_sources
+        importer.pull_stories
         x = list_stories
       elsif (1..(x.length)).include?(selection.to_i)
         system "open #{x[selection.to_i-1].url}"
@@ -76,7 +77,7 @@ class ImportIO
       if selection == "exit"
         return false
       elsif RedditValidator.new(selection).validate
-        importer.source_add("Reddit",selection)
+        importer.add_source("Reddit",selection)
         puts "you added the #{selection} subreddit"
         return true
       else
@@ -96,7 +97,7 @@ class ImportIO
       if selection == "exit"
         return false
       elsif choices.include?(selection)
-        importer.source_add("Product Hunt",selection)
+        importer.add_source("Product Hunt",selection)
         puts "you added the #{selection} tag"
         return true
       else
@@ -112,7 +113,7 @@ class ImportIO
       if selection == "exit"
         return false
       elsif StackOverflowValidator.new(selection).validate
-        importer.source_add("Stack Overflow",selection)
+        importer.add_source("Stack Overflow",selection)
         puts "you added the #{selection} tag"
         return true
       else
