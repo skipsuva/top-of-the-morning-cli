@@ -5,4 +5,5 @@ class Story
     @title = title
     @url = url
   end
+  
 end
