@@ -1,4 +1,4 @@
-class RedditSearch
+class RedditValidator
   attr_accessor :subreddit
 
   def initialize(subreddit)

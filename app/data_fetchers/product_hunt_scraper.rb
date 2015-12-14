@@ -1,8 +1,8 @@
 class ProductHuntScraper
   attr_reader :url
 
-  def initialize(url = "https://www.producthunt.com/tech")
-    @url = url
+  def initialize(category = "tech")
+    @url = "https://www.producthunt.com/#{category}"
   end
 
   def product_scrape

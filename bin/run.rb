@@ -5,7 +5,6 @@ require_relative '../config/environment'
 
 
 stuff = StackOverflowValidator.new("gibberdygiberish")
-# binding.pry
 stuff.validate
 
 # master = ImportIO.new

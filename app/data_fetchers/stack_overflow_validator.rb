@@ -3,7 +3,7 @@ class StackOverflowValidator
 
   def initialize(tag)
     @tag = tag
-    @url = "http://www.stackoverflow.com/questions/tagged/#{tag}"
+    @url = "http://www.stackoverflow.com/tags/#{tag}"
   end
 
   def scrape
@@ -11,8 +11,11 @@ class StackOverflowValidator
   end
 
   def validate
-    binding.pry
-    scrape.css("h2").text.include? "There are no questions" ? false : true
+    if scrape.css(".summarycount").text == "0"
+      false
+    else
+      true
+    end
   end
 
 end
