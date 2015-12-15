@@ -1,10 +1,6 @@
 class HackerNews
   include RubyHackernews
 
-  def initialize
-
-  end
-
   def importer
     Entry.all.first
   end

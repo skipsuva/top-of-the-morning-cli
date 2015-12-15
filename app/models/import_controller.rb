@@ -23,6 +23,13 @@ class ImportController
    File.open("./config/sources.yml", 'w') { |f| YAML.dump(data, f) }
  end
 
+ def clear_source(site)     #skip edit
+   data = YAML.load_file("./config/sources.yml")
+   data[site] = []
+   File.open("./config/sources.yml", 'w') { |f| YAML.dump(data, f) }
+   clear_stories
+ end
+
   private
   def pull_reddit(subreddit=nil)
     #create and pull reddit
@@ -54,6 +61,10 @@ class ImportController
     else
       stories["Product Hunt"] = ProductHuntScraper.new.top_post
     end
+  end
+
+  def clear_stories
+    stories.clear
   end
 
 
