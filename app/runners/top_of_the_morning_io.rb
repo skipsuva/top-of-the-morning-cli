@@ -38,7 +38,6 @@ class ImportIO
         break
       elsif selection == "add"
         add_sources
-        importer.pull_stories
         x = list_stories
       elsif selection == "clear"
         remove_sources
@@ -68,7 +67,7 @@ class ImportIO
       elsif selection == "stack overflow"
         break if add_to_stack_overflow
         puts "make another selection, or type 'exit'"
-      elsif seleciton == 'exit'
+      elsif selection == 'exit'
         break
       else
         puts "Sorry, I didn't get, please make a valid selection"

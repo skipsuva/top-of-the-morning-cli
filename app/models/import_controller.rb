@@ -8,15 +8,30 @@ class ImportController
   end
 
 # First checks YAML file for any exisiting tags and loads them as custom sources
-  def pull_stories
-    self.custom_sources = YAML.load_file("./config/sources.yml")
+  def initial_pull
     pull_reddit
-    custom_sources["Reddit"].each{|subreddit| pull_reddit(subreddit)}
     pull_stack_overflow
-    custom_sources["Stack Overflow"].each{|stack_tag| pull_stack_overflow(stack_tag)}
     pull_hacker_news
     pull_product_hunt
-    custom_sources["Product Hunt"].each{|hunt_page| pull_product_hunt(hunt_page)}
+  end
+
+  def custom_pull(site,subselection)
+    case site.downcase
+    when "reddit"
+      pull_reddit(subselection)
+    when "stackoverflow"
+      pull_stack_overflow(subselection)
+    when "product hunt"
+      pull_product_hunt(subselection)
+    end
+  end
+
+  def pull_stories
+    initial_pull
+    self.custom_sources = YAML.load_file("./config/sources.yml")
+    custom_sources["Reddit"].each{|subreddit| custom_pull("Reddit",subreddit)}
+    custom_sources["Stack Overflow"].each{|stack_tag| custom_pull("Stack Overflow", stack_tag)}
+    custom_sources["Product Hunt"].each{|hunt_page| custom_pull("Product Hunt", hunt_page)}
   end
 
 # Matches the source site and updates & saves the hash key array in the YAML file
@@ -24,6 +39,7 @@ class ImportController
    data = YAML.load_file("./config/sources.yml")
    data[site] << subselection
    File.open("./config/sources.yml", 'w') { |f| YAML.dump(data, f) }
+   custom_pull(site,subselection)
  end
 
 # Clears and saves the matched source hash values in the YAML
@@ -69,7 +85,6 @@ class ImportController
       stories["Product Hunt"] = ProductHuntScraper.new.top_post
     end
   end
-
 
   def clear_stories
     stories.clear
