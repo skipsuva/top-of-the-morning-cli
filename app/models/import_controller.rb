@@ -45,9 +45,11 @@ class ImportController
 # Clears and saves the matched source hash values in the YAML
  def clear_source(site)
    data = YAML.load_file("./config/sources.yml")
-   data[site] = []
+   #generates an array of keys from the site that is being deleted
+   keys = data[site].map{|subselection| "#{site} - #{subselection}:"}
+   data[site] = [] #clear the site map
    File.open("./config/sources.yml", 'w') { |f| YAML.dump(data, f) }
-   clear_stories
+   custom_clear(keys) #clear the stories from the importer
  end
 
   private
@@ -86,8 +88,11 @@ class ImportController
     end
   end
 
-  def clear_stories
-    stories.clear
+  #takes in array of keys and removes those keys from the hash of stories
+  def custom_clear(keys)
+    keys.each do |key|
+      stories.delete(key)
+    end
   end
 
 end

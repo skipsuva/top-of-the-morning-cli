@@ -41,7 +41,7 @@ class ImportIO
         x = list_stories
       elsif selection == "clear"
         remove_sources
-        importer.pull_stories
+        # importer.pull_stories
         x = list_stories
       elsif (1..(x.length)).include?(selection.to_i)
         system "open #{x[selection.to_i-1].url}"
