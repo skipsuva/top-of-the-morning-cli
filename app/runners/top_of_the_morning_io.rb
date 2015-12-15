@@ -1,27 +1,30 @@
+# Main user interface class for the CLI
 class ImportIO
   attr_accessor :importer
 
-
-  def open
+  def begin
     puts "Top of the morning to you, sir!"
     puts "Loading your top stories...one moment please..."
   end
 
+# Utilizes the central import controller class to pull all site data
   def todays_stories
     self.importer = ImportController.new
     importer.pull_stories
   end
 
+# Lists the stories that were pulled, including any additional categories in the YAML file
   def list_stories
     counter = 1
     story_array = importer.stories.map do |key, value|
-      puts "#{counter}. #{key.capitalize} --> #{value.print_story}"
+      puts "#{counter}. #{key} --> #{value.print_story}"
       counter += 1
       value
     end
     story_array
   end
 
+# Initial user controller
   def selection
     x = list_stories
     puts "\n Please enter the number of the story you'd like to read
@@ -37,18 +40,16 @@ class ImportIO
         add_sources
         importer.pull_stories
         x = list_stories
-      elsif selection == "clear"     #skip edits
+      elsif selection == "clear"
         remove_sources
         importer.pull_stories
         x = list_stories
-
       elsif (1..(x.length)).include?(selection.to_i)
         system "open #{x[selection.to_i-1].url}"
       else
         puts "Please enter a valid selection:"
       end
     end
-
   end
 
   def add_sources
@@ -71,59 +72,6 @@ class ImportIO
         break
       else
         puts "Sorry, I didn't get, please make a valid selection"
-      end
-    end
-  end
-
-
-  def add_to_reddit
-    loop do
-      puts "Type in any subreddit, or type 'exit':"
-      selection = (gets.chomp).downcase
-      if selection == "exit"
-        return false
-      elsif RedditValidator.new(selection).validate
-        importer.add_source("Reddit",selection)
-        puts "You added the #{selection.capitalize} subreddit"
-        return true
-      else
-        puts "I'm sorry, that's not a valid subreddit, try again!"
-      end
-    end
-  end
-
-  def add_to_product_hunt
-    choices = ["games","books","podcasts"]
-    loop do
-      puts "Select one of the following categories, or type 'exit':
-      -'Games'
-      -'Books'
-      -'Podcasts'"
-      selection = (gets.chomp).downcase
-      if selection == "exit"
-        return false
-      elsif choices.include?(selection)
-        importer.add_source("Product Hunt", selection)
-        puts "you added the #{selection} tag"
-        return true
-      else
-        puts "I'm sorry, that's not a valid tag, try again!"
-      end
-    end
-  end
-
-  def add_to_stack_overflow
-    loop do
-      puts "Type in any Stack Overflow tag, or type 'exit':"
-      selection = (gets.chomp).downcase
-      if selection == "exit"
-        return false
-      elsif StackOverflowValidator.new(selection).validate
-        importer.add_source("Stack Overflow",selection)
-        puts "You added the #{selection} tag"
-        return true
-      else
-        puts "I'm sorry, that's not a valid tag, try again!"
       end
     end
   end
@@ -152,6 +100,68 @@ class ImportIO
     end
   end
 
+  def exit_program
+    puts "Bye!"
+  end
+
+  private
+
+# Takes in a desired subreddit and sends it to the validator
+  def add_to_reddit
+    loop do
+      puts "Type in any subreddit, or type 'exit':"
+      selection = (gets.chomp).downcase
+      if selection == "exit"
+        return false
+      elsif RedditValidator.new(selection).validate
+        importer.add_source("Reddit",selection)
+        puts "You added the #{selection.capitalize} subreddit"
+        return true
+      else
+        puts "I'm sorry, that's not a valid subreddit, try again!"
+      end
+    end
+  end
+
+# Takes in a desired category and sends it to the validator
+  def add_to_product_hunt
+    choices = ["games","books","podcasts"]
+    loop do
+      puts "Select one of the following categories, or type 'exit':
+      -'Games'
+      -'Books'
+      -'Podcasts'"
+      selection = (gets.chomp).downcase
+      if selection == "exit"
+        return false
+      elsif choices.include?(selection)
+        importer.add_source("Product Hunt", selection)
+        puts "you added the #{selection} tag"
+        return true
+      else
+        puts "I'm sorry, that's not a valid tag, try again!"
+      end
+    end
+  end
+
+# Takes in a desired programming language tag and sends it to the validator
+  def add_to_stack_overflow
+    loop do
+      puts "Type in any Stack Overflow tag, or type 'exit':"
+      selection = (gets.chomp).downcase
+      if selection == "exit"
+        return false
+      elsif StackOverflowValidator.new(selection).validate
+        importer.add_source("Stack Overflow",selection)
+        puts "You added the #{selection} tag"
+        return true
+      else
+        puts "I'm sorry, that's not a valid tag, try again!"
+      end
+    end
+  end
+
+# Calls on the ImportController class method to clear the section of the YAML file
   def clear_reddit
     importer.clear_source("Reddit")
     return true
@@ -165,10 +175,6 @@ class ImportIO
   def clear_stack_overflow
     importer.clear_source("Stack Overflow")
     return true
-  end
-
-  def exit_program
-    puts "Bye!"
   end
 
 end

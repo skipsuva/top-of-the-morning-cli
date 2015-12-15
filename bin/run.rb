@@ -13,6 +13,6 @@ require_relative '../config/environment'
 # stuff.validate
 
 master = ImportIO.new
-master.open
+master.begin
 master.todays_stories
 master.selection

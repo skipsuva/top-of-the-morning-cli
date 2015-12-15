@@ -1,3 +1,4 @@
+# Utilizes the JSON data available via Reddit urls
 class RedditJson
   attr_accessor :subreddit
 
@@ -10,6 +11,7 @@ class RedditJson
     JSON.parse(RestClient.get(url))
   end
 
+# Pulls top story, accounts for "Stickied" posts
   def top_story
     raw = pull_json
     i = 0

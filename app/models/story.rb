@@ -1,3 +1,4 @@
+# Acts as parent class for site-specific Story classes
 class Story
   attr_accessor :title, :url, :points
 

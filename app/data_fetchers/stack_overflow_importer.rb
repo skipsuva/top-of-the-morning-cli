@@ -1,3 +1,4 @@
+# Utilizes a Stack Overflow API gem
 class StackOverflowImporter
   attr_accessor :tag
 

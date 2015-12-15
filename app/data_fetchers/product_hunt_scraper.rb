@@ -1,3 +1,4 @@
+# Utilizes the Nokogiri gem to scrape desired urls on Product Hunt
 class ProductHuntScraper
   attr_reader :url, :category
 

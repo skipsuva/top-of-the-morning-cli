@@ -1,3 +1,4 @@
+# Controls site-specific data importes
 class ImportController
   attr_accessor :stories, :custom_sources
 
@@ -6,6 +7,7 @@ class ImportController
     @custom_sources = YAML.load_file("./config/sources.yml")
   end
 
+# First checks YAML file for any exisiting tags and loads them as custom sources
   def pull_stories
     self.custom_sources = YAML.load_file("./config/sources.yml")
     pull_reddit
@@ -17,13 +19,15 @@ class ImportController
     custom_sources["Product Hunt"].each{|hunt_page| pull_product_hunt(hunt_page)}
   end
 
+# Matches the source site and updates & saves the hash key array in the YAML file
   def add_source(site, subselection)
    data = YAML.load_file("./config/sources.yml")
    data[site] << subselection
    File.open("./config/sources.yml", 'w') { |f| YAML.dump(data, f) }
  end
 
- def clear_source(site)     #skip edit
+# Clears and saves the matched source hash values in the YAML
+ def clear_source(site)
    data = YAML.load_file("./config/sources.yml")
    data[site] = []
    File.open("./config/sources.yml", 'w') { |f| YAML.dump(data, f) }
@@ -31,8 +35,8 @@ class ImportController
  end
 
   private
+# Creates a new Reddit Story thru the RedditJson class and pulls the data
   def pull_reddit(subreddit=nil)
-    #create and pull reddit
     if subreddit
       key = "Reddit - #{subreddit}:"
       stories[key] = RedditJson.new(subreddit).top_story
@@ -41,6 +45,7 @@ class ImportController
     end
   end
 
+# Creates a new Stack Overflow Story thru the StackOverflowImporter class and pulls the data
   def pull_stack_overflow(tag = "ruby")
     if tag != "ruby"
       key = "Stack Overflow - #{tag}:"
@@ -50,10 +55,12 @@ class ImportController
     end
   end
 
+# Creates a new Hacker News Story thru the HackerNews class and pulls the data
   def pull_hacker_news
     stories["Hacker News"] = HackerNews.new.top_post
   end
 
+# Creates a new Product Hunt Story thru the ProductHuntScraper class and pulls the data
   def pull_product_hunt(hunt_page = "tech")
     if hunt_page != "tech"
       key = "Product Hunt - #{hunt_page}:"
@@ -63,9 +70,9 @@ class ImportController
     end
   end
 
+
   def clear_stories
     stories.clear
   end
-
 
 end

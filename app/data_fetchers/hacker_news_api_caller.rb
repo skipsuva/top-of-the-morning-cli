@@ -1,3 +1,4 @@
+# Utilizes the Hacker News API gem
 class HackerNews
   include RubyHackernews
 
